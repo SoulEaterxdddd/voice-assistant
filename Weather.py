@@ -33,6 +33,8 @@ def weather(city):
     weather = soup.select('#wob_tm')[0].getText().strip()
     speak(location + " " + info + " " + weather + " Градуса по цельсию")
 
-city = "Киров"
+with m as source:
+    audio = r.listen(source)
+city = r.recognize_google(audio, language = 'ru-RU')
 city = city+" weather"
 weather(city)
