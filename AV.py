@@ -5,6 +5,7 @@ import speech_recognition as sr
 from fuzzywuzzy import fuzz
 import pyttsx3
 import datetime
+import webbrowser as wb
 from bs4 import BeautifulSoup
 import requests
 
@@ -18,8 +19,9 @@ opts = {
     "cmds": {
         "ctime": ('текущее время', 'сейчас времени', 'который час'),
         "radio": ('включи музыку', 'воспроизведи радио', 'включи радио'),
-        "stupid1": ('расскажи анекдот', 'рассмеши меня', 'ты знаешь анекдоты'),
-        "weather":('погода','скажи погоду','какая сейчас погода')
+        "stupid1": ('расскажи анекдот', 'рассмеши меня', 'ты знаешь анекдоты','щутку'),
+        "weather":('погода','скажи погоду','какая сейчас погода'),
+        "search":('найди','найди в интернете','поищи в интернете','запрос')
     }
 }
 
@@ -69,6 +71,22 @@ def recognize_cmd(cmd):
 
     return RC
 
+def search(task):
+    mas = ['ва','голосовой помощник','голосовой ассистент','ассистент','voice assistant','помощник']
+    keys = ('найди','найди в интернете','поищи в интернете','запрос')
+    for i in mas:
+        task = task.replace(i, '')
+        task = task.replace('  ', ' ')
+    task = task.strip()
+
+    for i in keys:
+        if i in task:
+            srch = task.replace(i, '')
+            srch = srch.strip()
+            task = 'найди'
+
+    if task == 'найди':
+        wb.open(f'https://www.google.ru/search?q={srch}')
 
 def execute_cmd(cmd):
     if cmd == 'ctime':
@@ -83,8 +101,12 @@ def execute_cmd(cmd):
     elif cmd == 'weather':
         import Weather
 
+    elif cmd == 'search':
+        import web
+
     else:
         print('Команда не распознана, повторите!')
+
 
 
 # запуск
