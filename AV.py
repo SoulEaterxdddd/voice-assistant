@@ -1,13 +1,11 @@
 # Голосовой ассистент1.0 BETA
-import os
 import time
 import speech_recognition as sr
 from fuzzywuzzy import fuzz
 import pyttsx3
 import datetime
-import webbrowser as wb
-from bs4 import BeautifulSoup
-import requests
+
+
 
 headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
@@ -71,22 +69,6 @@ def recognize_cmd(cmd):
 
     return RC
 
-def search(task):
-    mas = ['ва','голосовой помощник','голосовой ассистент','ассистент','voice assistant','помощник']
-    keys = ('найди','найди в интернете','поищи в интернете','запрос')
-    for i in mas:
-        task = task.replace(i, '')
-        task = task.replace('  ', ' ')
-    task = task.strip()
-
-    for i in keys:
-        if i in task:
-            srch = task.replace(i, '')
-            srch = srch.strip()
-            task = 'найди'
-
-    if task == 'найди':
-        wb.open(f'https://www.google.ru/search?q={srch}')
 
 def execute_cmd(cmd):
     if cmd == 'ctime':
