@@ -3,17 +3,18 @@ import pyttsx3
 from bs4 import BeautifulSoup
 import requests
 
+#Настрокйи браузера
 headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
-# функции
+# Синтезатор речи
 def speak(what):
     print(what)
     speak_engine.say(what)
     speak_engine.runAndWait()
     speak_engine.stop()
 
-# запуск
+# запуск (Определение микрофона)
 r = sr.Recognizer()
 m = sr.Microphone(device_index=1)
 
@@ -22,6 +23,7 @@ with m as source:
 
 speak_engine = pyttsx3.init()
 
+#Функция погоды
 def weather(city):
     city = city.replace(" ", "+")
     res = requests.get(
@@ -33,6 +35,8 @@ def weather(city):
     weather = soup.select('#wob_tm')[0].getText().strip()
     speak(location + " " + info + " " + weather + " Градуса по цельсию")
 
+
+#Преобразование запроса в текст (Город)
 with m as source:
     audio = r.listen(source)
 city = r.recognize_google(audio, language = 'ru-RU')
