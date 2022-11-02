@@ -6,11 +6,11 @@ import pyttsx3
 import datetime
 
 
-
+#Настройки браузера
 headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
-# настройки
+#Словарь ключевых слов
 opts = {
     "alias": ('ва','голосовой помощник','голосовой ассистент','ассистент','voice assistant','помощник'),
     "tbr": ('скажи', 'расскажи', 'покажи', 'сколько', 'произнеси'),
@@ -24,7 +24,7 @@ opts = {
 }
 
 
-# функции
+# функция синтеза речи
 def speak(what):
     print(what)
     speak_engine.say(what)
@@ -33,6 +33,7 @@ def speak(what):
 
 
 def callback(recognizer, audio):
+    # Рапознавание голоса и превращение его в строку
     try:
         voice = recognizer.recognize_google(audio, language="ru-RU").lower()
         print("[log] Распознано: " + voice)
@@ -51,12 +52,13 @@ def callback(recognizer, audio):
             cmd = recognize_cmd(cmd)
             execute_cmd(cmd['cmd'])
 
+    # На случай если голос не распознался
     except sr.UnknownValueError:
         print("[log] Голос не распознан!")
     except sr.RequestError as e:
         print("[log] Неизвестная ошибка, проверьте интернет!")
 
-
+#Определение со словарем и выбор функции
 def recognize_cmd(cmd):
     RC = {'cmd': '', 'percent': 0}
     for c, v in opts['cmds'].items():
@@ -81,14 +83,17 @@ def execute_cmd(cmd):
         speak("1234567890")
 
     elif cmd == 'weather':
+	# Модуль погоды
         print('Какой ваш город ?')
         import Weather
 
     elif cmd == 'search':
+	# Веб запрос
         print('Какой ваш запрос ?')
         import web
 
     else:
+	# Команда не распознана
         print('Команда не распознана, повторите!')
 
 
@@ -102,9 +107,9 @@ with m as source:
 
 speak_engine = pyttsx3.init()
 
-
+# Приветствие
 speak("Добрый день, Голосовой помощник на связи")
 speak("Слушаю команду")
 
 stop_listening = r.listen_in_background(m, callback)
-while True: time.sleep(0.1) # infinity loop
+while True: time.sleep(0.1) # Прослушка шумов
